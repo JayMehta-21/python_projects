@@ -9,6 +9,11 @@ from database import (
 
 from reports import get_remaining_budget
 
+from analytics import (
+    get_monthly_total,
+    get_category_summary,
+    )
+
 
 def main():
 
@@ -17,9 +22,9 @@ def main():
     while True:
 
         print("\n----------------Finance Manager---------------")
-        print("1️⃣. Set Monthly Budget \n2️⃣. Add Expense \n3️⃣. View Remaining budget \n4️⃣. Exit")
+        print("1️⃣. Set Monthly Budget \n2️⃣. Add Expense \n3️⃣. View Remaining budget \n4️⃣. View Monthly Expense \n5️⃣. Exit")
 
-        choice = input("Choose action from menu (1-4) : ")
+        choice = input("Choose action from menu (1-5) : ")
 
         if choice == "1":
 
@@ -52,15 +57,32 @@ def main():
         elif choice ==  "3":
             remaining = get_remaining_budget()
 
-            print(f"\n{remaining}")
+            print(f"\nRemaing budget : {remaining}")
 
             if remaining < 0 :
                 print("Warning! You have exceeded your budget")
             else:
                 print("Spendings is Undercontrol ")
 
+        elif choice == "4":
 
-        elif choice == "4" :
+            month = input("Enter the month (YYYY-MM): ")
+
+            total = get_monthly_total(month)
+            print(f"\nTotal expense for {month} : {total}")
+
+            user = input("Want category wise summary (yes/no) : ").lower().strip()
+
+            if user == "yes":
+                summary = get_category_summary(month)
+                if summary:
+                    print("\n------------- Category Summary -------------\n")
+                    for category, amount in summary:
+                        print(f"{category} : {amount}")
+                else:
+                    print("Nothing to show")
+
+        elif choice == "5" :
             print("Goodbye...")
             break
 
